@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-page
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      app: meudeployment
+  template:
+    metadata:
+      labels: 
+        app: meudeployment
+    spec:
+      containers:
+        - name: web
+          image: fabricioveronez/web-page:green
+          ports:
+          - containerPort: 80
+---
+# Service web-page
+apiVersion: v1
+kind: Service
+metadata:
+  name: web-page
+spec:
+  selector:
+    app: meudeployment
+  ports:
+  - port: 80
+    # targetPort: <Target Port>
+    protocol: TCP
+    name: http
+    nodePort: 30000
+  type: NodePort
